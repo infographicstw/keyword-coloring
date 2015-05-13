@@ -65,3 +65,11 @@ body {
     width: 11%;
   }
 }
+@media (max-width: 480px) {
+  h3 {
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+}
