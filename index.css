@@ -8,6 +8,9 @@ body {
 #root {
   margin: 20px;
 }
+#footer {
+  margin-top: 20px;
+}
 #widget {
   width: 100%;
   max-width: 800px;
