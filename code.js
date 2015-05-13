@@ -1,5 +1,6 @@
 $(document).ready(function() {
 var colormap = ["紅色","橙色","黃色","黃綠色","綠色","青綠色","水藍色","藍色","深藍色","藍紫色","紫色","紫紅色","灰色","黑色","白色"];
+
 window.search = function(keyword) {
   var query = $("#keyword").val();
   if(keyword) query = keyword;
@@ -44,9 +45,11 @@ window.search = function(keyword) {
         var i,colorOrder = [];
         for(i=0;i<15;i++) colorOrder.push([i, huehash[i]]);
         colorOrder.sort(function(a,b) { if(a[1]>b[1]) { return -1; } else if(a[1]<b[1]) { return 1; } else return 0;});
+        window.resultColor = colormap[colorOrder[0][0]];
         $("#result").html(
             "「"+query+"」是 : "+colormap[colorOrder[0][0]] + 
-            "&nbsp; &nbsp; <small>輔色是"+colormap[colorOrder[1][0]] + "</small>"
+            "&nbsp; &nbsp; <small>輔色是"+colormap[colorOrder[1][0]] + "</small>" +
+            "<a href='#' onclick='share(\""+query+"\")"'>分享至臉書</a>"
         );
       };
       img.crossOrigin = 'Anonymous';
@@ -62,4 +65,14 @@ window.search = function(keyword) {
 var keyword = decodeURIComponent(window.location.search.replace(/^\?/,""))
 if(!keyword) { keyword = "香蕉"; }
 window.search(keyword);
+window.share = function(query) {
+  var obj = {
+    method: 'feed',
+    link: 'http://data.infographics.tw/viz/keyword-coloring/?'+query,
+    title: "關鍵字上色！「"+query+"」的顏色是..."+window.resultColor, 
+    picture: 'http://data.infographics.tw/viz/keyword-coloring/thumbnail.png',
+    description: "除了"+query+"之外，你知道「鏡子」、「空氣」或「靈魂」是什麼顏色嗎？不知道的顏色，就讓關鍵字圖片搜尋告訴你！"
+  };
+  FB.ui(obj, function() {});
+};
 });
