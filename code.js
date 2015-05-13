@@ -1,5 +1,5 @@
 $(document).ready(function() {
-var colormap = ["紅色","橙色","黃色","綠色","綠色","綠色","藍色","藍色","藍色","藍色","紫色","紫色","灰色"];
+var colormap = ["紅色","橙色","黃色","黃綠色","綠色","青綠色","水藍色","藍色","深藍色","藍紫色","紫色","紫紅色","灰色","黑色","白色"];
 window.search = function(keyword) {
   var query = $("#keyword").val();
   if(keyword) query = keyword;
@@ -11,35 +11,43 @@ window.search = function(keyword) {
   })
   .done(function(data) {
     var imgs = $(data).find(".images_table img");
-    var huehash = {};
+    var i,huehash = {};
+    for(i=0;i<15;i++) huehash[i] = 0;
     function makepalette(url) {
       var img = new Image();
       img.onload = function() {
         var ct = new ColorThief();
         var palette = ct.getPalette(img,8);
         var str = "", idx, hue;
+        var colors = [], c;
         for(idx=0;idx<palette.length;idx++) {
           c = palette[idx];
           tc = tinycolor({r:c[0],g:c[1],b:c[2]});
           hue = parseInt(tc.toHsl().h);
           sat = tc.toHsl().s;
+          lit = tc.toHsl().l;
           textcolor = (tc.isDark()?"rgba(255,255,255,0.8)":"rgba(0,0,0,0.8)");
-          str += "<div class='color' style='color:"+textcolor+";background:rgb("+c[0]+","+c[1]+","+c[2]+")'>"+hue+"</div>"
+          colors.push([textcolor, c, hue]);
           hue = parseInt(((hue + 15)%360) / 30);
-          if( sat < 0.1 ) hue = 12;
+          if( lit > 0.9 ) hue = 14;
+          else if( lit < 0.15 ) hue = 13;
+          else if( sat < 0.1 ) hue = 12;
           huehash[hue] = (huehash[hue] || 0) + 1;
+        }
+        colors.sort(function(a,b) { if(a[2]>b[2]) { return 1; } else if (a[2]<b[2]) { return -1;} else return 0;});
+        for(idx=0;idx<colors.length;idx++) {
+          c = colors[idx];
+          str += "<div class='color' style='color:"+c[0]+";background:rgb("+c[1][0]+","+c[1][1]+","+c[1][2]+")'>"+c[2]+"</div>"
         }
         str = "<div class='item'><div class='img' style='background-image:url("+this.src+")'></div><div class='palette'>"+str+"</div></div>"
         document.getElementById("palettes").innerHTML += str;
-        var maxidx = 0;
-        var maxvalue = 0;
-        for(i=0;i<13;i++) {
-          if(huehash[i] > maxvalue) {
-            maxvalue = huehash[i];
-            maxidx = i;
-          }
-        }
-        $("#result").text("「"+query+"」是 : "+colormap[maxidx]);
+        var i,colorOrder = [];
+        for(i=0;i<15;i++) colorOrder.push([i, huehash[i]]);
+        colorOrder.sort(function(a,b) { if(a[1]>b[1]) { return -1; } else if(a[1]<b[1]) { return 1; } else return 0;});
+        $("#result").html(
+            "「"+query+"」是 : "+colormap[colorOrder[0][0]] + 
+            "&nbsp; &nbsp; <small>輔色是"+colormap[colorOrder[1][0]] + "</small>"
+        );
       };
       img.crossOrigin = 'Anonymous';
       img.src = "http://crossorigin.me/"+url;
