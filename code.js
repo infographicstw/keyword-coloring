@@ -59,5 +59,7 @@ window.search = function(keyword) {
     }
   }); 
 }
-window.search("香蕉");
+var keyword = decodeURIComponent(window.location.search.replace(/^\?/,""))
+if(!keyword) { keyword = "香蕉"; }
+window.search(keyword);
 });
