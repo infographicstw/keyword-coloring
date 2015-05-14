@@ -26,9 +26,11 @@ window.search = function(keyword) {
         var palette = ct.getPalette(img,8);
         var str = "", idx, hue;
         var colors = [], c;
+        var hex = [];
         for(idx=0;idx<palette.length;idx++) {
           c = palette[idx];
           tc = tinycolor({r:c[0],g:c[1],b:c[2]});
+          hex.push(tc.toHexString());
           hue = parseInt(tc.toHsl().h);
           sat = tc.toHsl().s;
           lit = tc.toHsl().l;
@@ -45,7 +47,8 @@ window.search = function(keyword) {
           c = colors[idx];
           str += "<div class='color' style='color:"+c[0]+";background:rgb("+c[1][0]+","+c[1][1]+","+c[1][2]+")'>"+c[2]+"</div>"
         }
-        str = "<div class='item'><div class='img' style='background-image:url("+this.src+")'></div><div class='palette'>"+str+"</div></div>"
+        loadingio = "<a class='loadingio-link' target='_blank' href='http://localhost/color/?colors="+hex.map(function(it){return it.substring(1);}).join(",")+"&name="+query+"'><i class='glyphicon glyphicon-share'></i>存</span>"
+        str = "<div class='item'><div class='img' style='background-image:url("+this.src+")'></div><div class='palette'>"+str+loadingio+"</div></div>"
         document.getElementById("palettes").innerHTML += str;
         var i,colorOrder = [];
         for(i=0;i<15;i++) colorOrder.push([i, huehash[i]]);

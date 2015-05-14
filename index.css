@@ -78,3 +78,9 @@ body {
     text-align: center;
   }
 }
+.loadingio-link {
+  position: relative;
+  top: 14px;
+  left: 3px;
+  font-size: 12px;
+}
