@@ -30,13 +30,14 @@ html(lang="en")
       #widget
         .form
           .input-group
-            input#keyword.form-control(type="text",placeholder="想要找的關鍵字, 例如: 香蕉")
+            input#keyword.form-control(type="text",placeholder="想要找的關鍵字, 例如: 香蕉、王小明",onkeypress="keylisten()")
             span.input-group-btn
               .btn.btn-default(onclick="search()") 產生色票
           #result
           #palettes
+          #loading
         hr
-        .row
+        .row(style="height:70px")
           .col-sm-6.text-center
             .fb-box
               .fb-like-box(data-href="https://www.facebook.com/data.visualize",data-colorscheme="light",
@@ -56,6 +57,7 @@ html(lang="en")
         js = d.createElement(s); js.id = id;
         js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&appId=1587437048209186&version=v2.0";
         fjs.parentNode.insertBefore(js, fjs);
+
       }(document, 'script', 'facebook-jssdk'));</script>
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -1,7 +1,12 @@
 $(document).ready(function() {
 var colormap = ["紅色","橙色","黃色","黃綠色","綠色","青綠色","水藍色","藍色","深藍色","藍紫色","紫色","紫紅色","灰色","黑色","白色"];
 
+window.working = false;
 window.search = function(keyword) {
+  if(window.working) return;
+  window.working = 5;
+  $("#loading").show();
+  $("#result").html();
   var query = $("#keyword").val();
   if(keyword) query = keyword;
   if(!query) return;
@@ -48,9 +53,14 @@ window.search = function(keyword) {
         window.resultColor = colormap[colorOrder[0][0]];
         $("#result").html(
             "「"+query+"」是 : "+colormap[colorOrder[0][0]] + 
-            "&nbsp; &nbsp; <small>輔色是"+colormap[colorOrder[1][0]] + "</small>" +
-            "<a href='#' onclick='share(\""+query+"\")"'>分享至臉書</a>"
+            "&nbsp; &nbsp; <small>輔色是"+colormap[colorOrder[1][0]] + " &nbsp; / &nbsp; " +
+            "<a href='#' onclick='share(\""+query+"\")'><i class='glyphicon glyphicon-share'/>分享至臉書</a></small>"
         );
+        window.working--;
+        if(window.working<=0) {
+          window.working = 0;
+          $("#loading").hide();
+        }
       };
       img.crossOrigin = 'Anonymous';
       img.src = "http://crossorigin.me/"+url;
@@ -69,10 +79,13 @@ window.share = function(query) {
   var obj = {
     method: 'feed',
     link: 'http://data.infographics.tw/viz/keyword-coloring/?'+query,
-    title: "關鍵字上色！「"+query+"」的顏色是..."+window.resultColor, 
-    picture: 'http://data.infographics.tw/viz/keyword-coloring/thumbnail.png',
-    description: "除了"+query+"之外，你知道「鏡子」、「空氣」或「靈魂」是什麼顏色嗎？不知道的顏色，就讓關鍵字圖片搜尋告訴你！"
+    name: "關鍵字上色！「"+query+"」的顏色是..."+window.resultColor, 
+    caption: "infographics.tw / Google 圖片搜尋分析字詞顏色",
+    picture: 'http://data.infographics.tw/viz/keyword-coloring/thumbnail.jpg',
+    description: "除了"+query+"之外，你知道「鏡子」、「空氣」或「靈魂」是什麼顏色嗎？不知道的顏色，就讓關鍵字圖片搜尋告訴你！",
   };
+
   FB.ui(obj, function() {});
 };
+window.keylisten = function() { if(event.keyCode==13) {search();} };
 });
