@@ -10,6 +10,7 @@ window.search = function(keyword) {
   var query = $("#keyword").val();
   if(keyword) query = keyword;
   if(!query) return;
+  window.primaryImage = "http://data.infographics.tw/viz/keyword-coloring";
   $("#palettes").html("");
   $.ajax({
     url: 'http://crossorigin.me/https://www.google.com.tw/search?hl=zh-TW&site=imghp&tbm=isch&q='+query+'&oq='+query,
@@ -27,6 +28,7 @@ window.search = function(keyword) {
         var str = "", idx, hue;
         var colors = [], c;
         var hex = [];
+        window.primaryImage = this.src;
         for(idx=0;idx<palette.length;idx++) {
           c = palette[idx];
           tc = tinycolor({r:c[0],g:c[1],b:c[2]});
@@ -84,7 +86,8 @@ window.share = function(query) {
     link: 'http://data.infographics.tw/viz/keyword-coloring/?'+query,
     name: "關鍵字上色！「"+query+"」的顏色是..."+window.resultColor, 
     caption: "infographics.tw / Google 圖片搜尋分析字詞顏色",
-    picture: 'http://data.infographics.tw/viz/keyword-coloring/thumbnail.jpg',
+    picture: window.primaryImage,
+    /*picture: 'http://data.infographics.tw/viz/keyword-coloring/thumbnail.jpg',*/
     description: "除了"+query+"之外，你知道「鏡子」、「空氣」或「靈魂」是什麼顏色嗎？不知道的顏色，就讓關鍵字圖片搜尋告訴你！",
   };
 
