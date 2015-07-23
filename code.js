@@ -49,7 +49,7 @@ window.search = function(keyword) {
           c = colors[idx];
           str += "<div class='color' style='color:"+c[0]+";background:rgb("+c[1][0]+","+c[1][1]+","+c[1][2]+")'>"+c[2]+"</div>"
         }
-        loadingio = "<a class='loadingio-link' target='_blank' href='http://localhost/color/?colors="+hex.map(function(it){return it.substring(1);}).join(",")+"&name="+query+"'><i class='glyphicon glyphicon-share'></i>存</span>"
+        loadingio = "<a class='loadingio-link' target='_blank' href='http://loading.io/color/?colors="+hex.map(function(it){return it.substring(1);}).join(",")+"&name="+query+"'><i class='glyphicon glyphicon-share'></i>存</span>"
         str = "<div class='item'><div class='img' style='background-image:url("+this.src+")'></div><div class='palette'>"+str+loadingio+"</div></div>"
         document.getElementById("palettes").innerHTML += str;
         var i,colorOrder = [];
