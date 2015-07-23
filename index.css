@@ -18,6 +18,11 @@ body {
   font-family: calibri;
   font-size: 12px;
 }
+@media (max-width: 768px) {
+  #footer {
+    margin-top: 100px;
+  }
+}
 #widget {
   width: 100%;
   max-width: 800px;
