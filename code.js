@@ -77,8 +77,11 @@ window.search = function(keyword) {
     }
   }); 
 }
-var keyword = decodeURIComponent(window.location.search.replace(/^\?/,""))
-if(!keyword) { keyword = "香蕉"; }
+/*var keyword = decodeURIComponent(window.location.search.replace(/^\?/,""))*/
+var ret = /\?([^=&]+)/.exec(decodeURIComponent(window.location.search));
+
+if(!ret) { keyword = "香蕉"; }
+else { keyword = ret[1]; }
 window.search(keyword);
 window.share = function(query) {
   var obj = {
